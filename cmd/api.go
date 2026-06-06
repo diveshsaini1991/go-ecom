@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/diveshsaini1991/ecom/internal/products"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -25,6 +27,10 @@ func (app *application) mount() http.Handler {
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("All Good!"))
 	})
+
+	productService := products.NewService()
+	productHandler := products.NewHandler(productService)
+	r.Get("/products", productHandler.ListProducts)
 
 	return r
 }
